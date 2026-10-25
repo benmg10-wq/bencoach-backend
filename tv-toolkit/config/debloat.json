@@ -1,0 +1,101 @@
+{
+  "_comment": "Liste GENERIQUE Android TV. Seuls les paquets reellement installes ET actifs sont proposes. Rien n'est jamais desinstalle : on utilise 'pm disable-user' (reversible). Ajoutez vos propres categories dans config/local.json (meme format).",
+  "protected": [
+    "android",
+    "com\\.android\\.(systemui|settings|shell|providers\\..*|inputmethod\\..*|bluetooth|packageinstaller|permissioncontroller|externalstorage|documentsui|certinstaller|keychain|location|nfc|se|server\\.telecom|storagemanager|mtp|vpndialogs|captiveportallogin|networkstack.*|wifi.*|webview|tv|tv\\..*|managedprovisioning|cellbroadcastreceiver.*)",
+    "com\\.google\\.android\\.(gms|gsf|gsf\\.login|webview|vending|packageinstaller|permissioncontroller|inputmethod\\..*|tv\\.remote.*|tv\\.bugreportsender|tvlauncher|apps\\.tv\\.launcherx|leanbacklauncher)",
+    "com\\.benmg\\.tvlauncher",
+    "(?i)com\\.(mediatek|mstar|realtek|droidlogic|amlogic|rockchip|hisilicon|softwinner|allwinner|broadcom|qualcomm|nxp|sunplus|novatek|tcl|skyworth|hisense)(\\..*)?",
+    "(?i).*(atlas|ontv|ironmax|smarttube|teamsmart).*"
+  ],
+  "my_apps_patterns": ["(?i).*atlas.*", "(?i).*ironmax.*", "(?i).*smarttube.*", "(?i).*teamsmart.*"],
+  "categories": [
+    {
+      "id": "telemetry",
+      "title": "Telemetrie / retours / initialisation partenaires Google",
+      "description": "Envoi de rapports et configuration publicitaire/partenaire. Sans impact sur l'usage.",
+      "ask": false,
+      "packages": [
+        "com.google.android.feedback",
+        "com.google.android.partnersetup",
+        "com.google.android.onetimeinitializer",
+        "com.google.android.syncadapters.contacts",
+        "com.google.android.syncadapters.calendar",
+        "com.android.providers.partnerbookmarks",
+        "com.android.egg"
+      ]
+    },
+    {
+      "id": "suspect",
+      "title": "Paquets au nom suspect (analytics, ads, tracker...)",
+      "description": "Detectes par leur nom. Verifiez chacun : ce sont des suppositions.",
+      "ask": true,
+      "patterns": ["(?i).*(analytics|telemetry|crashreport|datacollect|adservice|adsdk|advert|tracker|statistic|bigdata).*"]
+    },
+    {
+      "id": "oem",
+      "title": "Applications du fabricant (Continental Edison)",
+      "description": "Apps maison : boutique, promos, assistant... Peuvent inclure la pub. Certaines servent peut-etre (telecommande, mises a jour).",
+      "ask": true,
+      "patterns": ["(?i).*(continental|edison|conted|cedison).*"]
+    },
+    {
+      "id": "streaming",
+      "title": "Applications de streaming preinstallees",
+      "description": "Desactivez seulement celles que vous n'utilisez pas.",
+      "ask": true,
+      "packages": [
+        "com.netflix.ninja", "com.amazon.amazonvideo.livingroom", "com.disney.disneyplus",
+        "com.google.android.youtube.tv", "com.google.android.youtube.tvmusic",
+        "com.google.android.videos", "com.google.android.music", "com.spotify.tv.android",
+        "com.google.android.play.games"
+      ],
+      "patterns": ["(?i).*(netflix|primevideo|disney|spotify|molotov|salto|canal|mytf1|francetv|rakuten|plutotv|tubi|deezer|dazn|ocs).*"]
+    },
+    {
+      "id": "voice",
+      "title": "Assistant vocal / recherche vocale Google",
+      "description": "ATTENTION : le bouton micro de la telecommande ne fonctionnera plus.",
+      "ask": true,
+      "packages": ["com.google.android.katniss", "com.google.android.tv.assistant", "com.google.android.googlequicksearchbox"]
+    },
+    {
+      "id": "cast",
+      "title": "Chromecast integre (diffusion depuis telephone)",
+      "description": "ATTENTION : vous ne pourrez plus diffuser depuis le telephone vers la TV.",
+      "ask": true,
+      "packages": ["com.google.android.apps.mediashell"]
+    },
+    {
+      "id": "screensaver",
+      "title": "Economiseur d'ecran / mode ambiant",
+      "description": "Affiche parfois du contenu promotionnel.",
+      "ask": true,
+      "packages": ["com.google.android.backdrop", "com.google.android.apps.tv.dreamx", "com.android.dreams.basic", "com.android.dreams.phototable"]
+    },
+    {
+      "id": "updates",
+      "title": "Mises a jour systeme (OTA)",
+      "description": "ATTENTION : plus de mises a jour de securite du fabricant. A garder sauf si vous savez ce que vous faites.",
+      "ask": true,
+      "patterns": ["(?i).*(\\.ota\\b|otaupdate|systemupdate|fota|wsota|sysota).*"]
+    },
+    {
+      "id": "launcher_junk",
+      "title": "Recommandations / accueil Android TV d'origine (pubs de l'ecran d'accueil)",
+      "description": "Necessite que le nouveau lanceur soit installe ET par defaut.",
+      "ask": true,
+      "requires_launcher": true,
+      "packages": ["com.google.android.tvrecommendations", "com.google.android.leanbacklauncher.recommendations"]
+    },
+    {
+      "id": "home_hijack",
+      "title": "Assistant de configuration qui detourne le bouton Home (Google TV)",
+      "description": "Sur Google TV, com.google.android.tungsten.setupwraith peut voler la touche Home.",
+      "ask": false,
+      "requires_launcher": true,
+      "packages": ["com.google.android.tungsten.setupwraith"]
+    }
+  ],
+  "stock_launchers": ["com.google.android.tvlauncher", "com.google.android.leanbacklauncher", "com.google.android.apps.tv.launcherx"]
+}

@@ -1,0 +1,11 @@
+{
+  "_comment": "Fonds d'ecran nature. Le script tire au hasard des photos paysage >=1920px dans ces categories de Wikimedia Commons (licences libres). Vous pouvez aussi deposer vos propres JPG/PNG dans tv-toolkit/wallpapers/.",
+  "commons_categories": [
+    "Category:Featured pictures of landscapes",
+    "Category:Featured pictures of mountains",
+    "Category:Featured pictures of lakes",
+    "Category:Featured pictures of forests",
+    "Category:Featured pictures of beaches"
+  ],
+  "urls": []
+}

@@ -1,0 +1,10 @@
+backups/
+shots/
+wallpapers/
+tools/
+state.json
+config/local.json
+__pycache__/
+launcher/.gradle/
+launcher/build/
+launcher/app/build/
