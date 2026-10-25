@@ -641,6 +641,26 @@ def cmd_restore(a):
     print("Termine. Redemarrez la TV.")
 
 
+def cmd_guide(a):
+    """Parcours complet guide, etape par etape."""
+    print("=== Assistant TV : on va y aller doucement, vous pouvez arreter a tout moment (Ctrl+C) ===")
+    steps = [
+        ("Connexion a la TV", lambda: cmd_connect(argparse.Namespace(ip=None, scan=True, pair=None))),
+        ("Sauvegarde complete (indispensable)", lambda: cmd_backup(a)),
+        ("Installation du nouvel ecran d'accueil", lambda: cmd_launcher(argparse.Namespace(apk=None))),
+        ("Nettoyage des pubs et applis inutiles (je demande avant)", lambda: cmd_debloat(argparse.Namespace(only=None))),
+        ("TV plus fluide (animations reduites)", lambda: cmd_speed(argparse.Namespace(scale="0.5"))),
+        ("Fonds d'ecran nature", lambda: cmd_wallpapers(argparse.Namespace(
+            count=12, refresh=False, no_download=False, no_push=False))),
+    ]
+    for i, (title, fn) in enumerate(steps, 1):
+        print("\n##### Etape %d/%d : %s #####" % (i, len(steps), title))
+        if ask("Faire cette etape ? [O/n] ", "o").startswith("n"):
+            continue
+        fn()
+    print("\nTout est fini. Pour tout annuler : double-cliquez sur run.cmd puis tapez : restore")
+
+
 def cmd_status(a):
     print("Serie     : %s" % serial())
     print("Accueil   : %s" % current_home())
@@ -654,7 +674,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--yes", action="store_true", help="accepte les choix par defaut (non interactif)")
     ap.add_argument("--dry-run", action="store_true", help="n'applique rien")
-    sub = ap.add_subparsers(dest="cmd", required=True)
+    sub = ap.add_subparsers(dest="cmd")
     c = sub.add_parser("connect", help="trouve la TV et se connecte")
     c.add_argument("--ip"); c.add_argument("--scan", action="store_true")
     c.add_argument("--pair", nargs=2, metavar=("IP:PORT", "CODE"))
@@ -675,9 +695,10 @@ def main():
     r.add_argument("--backup"); r.add_argument("--keep-launcher", action="store_true")
     r.set_defaults(f=cmd_restore)
     sub.add_parser("status", help="etat actuel + capture").set_defaults(f=cmd_status)
+    sub.add_parser("guide", help="parcours complet guide (par defaut)").set_defaults(f=cmd_guide)
     a = ap.parse_args()
     YES, DRY = a.yes, a.dry_run
-    a.f(a)
+    (getattr(a, "f", None) or cmd_guide)(a)
 
 
 if __name__ == "__main__":

@@ -7,6 +7,9 @@ on:
       - '.github/workflows/tv-launcher.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,3 +29,10 @@ jobs:
         with:
           name: tv-launcher-apk
           path: tv-toolkit/launcher/app/build/outputs/apk/debug/app-debug.apk
+      - name: Commit APK into the repo
+        run: |
+          cp tv-toolkit/launcher/app/build/outputs/apk/debug/app-debug.apk tv-toolkit/tv-launcher.apk
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add tv-toolkit/tv-launcher.apk
+          git diff --cached --quiet || (git commit -m "Update built TV launcher APK" && git push)
